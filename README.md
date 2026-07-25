@@ -19,15 +19,16 @@ This project replaces a manual 5-step deployment process (build → package → 
 ```mermaid
 flowchart TD
     A[Developer pushes code to main] --> B[GitHub Actions triggered]
-    B --> C[Docker image built]
-    C --> D[Image deployed to AWS EC2]
-    D --> E[Container started/restarted]
-    E --> F[CloudWatch monitors CPU utilization]
-    F --> G{CPU threshold exceeded?}
-    G -- Yes --> H[Alarm triggered]
-    G -- No --> I[Normal operation]
+    B --> C[SSH into EC2 instance]
+    C --> D[git pull latest code on EC2]
+    D --> E[Docker image built on EC2]
+    E --> F[Old container stopped & removed]
+    F --> G[New container started]
+    G --> H[CloudWatch monitors CPU utilization]
+    H --> I{CPU threshold exceeded?}
+    I -- Yes --> J[Alarm triggered]
+    I -- No --> K[Normal operation]
 ```
-
 ## How It Works
 
 1. **Containerization**: The Flask application is packaged into a Docker image, ensuring consistent behavior across environments.
