@@ -15,22 +15,18 @@ This project replaces a manual 5-step deployment process (build → package → 
 - **Monitoring**: AWS CloudWatch
 
 ## Architecture
-Developer pushes code
-│
-▼
-GitHub Actions triggered
-│
-▼
-Docker image built
-│
-▼
-Image pushed / transferred to EC2
-│
-▼
-Container deployed & restarted on EC2
-│
-▼
-CloudWatch monitors EC2 CPU utilization
+
+```mermaid
+flowchart TD
+    A[Developer pushes code to main] --> B[GitHub Actions triggered]
+    B --> C[Docker image built]
+    C --> D[Image deployed to AWS EC2]
+    D --> E[Container started/restarted]
+    E --> F[CloudWatch monitors CPU utilization]
+    F --> G{CPU threshold exceeded?}
+    G -- Yes --> H[Alarm triggered]
+    G -- No --> I[Normal operation]
+```
 
 ## How It Works
 
